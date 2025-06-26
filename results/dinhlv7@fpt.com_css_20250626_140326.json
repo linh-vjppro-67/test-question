@@ -1,0 +1,29 @@
+{
+  "account": "dinhlv7@fpt.com",
+  "skill": "css",
+  "final_result": "LEVELS5",
+  "failed": false,
+  "history": [
+    {
+      "question_id": "262",
+      "selected_index": 1,
+      "is_correct": true
+    },
+    {
+      "question_id": "273",
+      "selected_index": 1,
+      "is_correct": true
+    },
+    {
+      "question_id": "287",
+      "selected_index": 0,
+      "is_correct": true
+    },
+    {
+      "question_id": "296",
+      "selected_index": 0,
+      "is_correct": true
+    }
+  ],
+  "timestamp": "2025-06-26T07:03:26.053609"
+}
