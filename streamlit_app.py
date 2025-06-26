@@ -5,10 +5,25 @@ from datetime import datetime, timedelta, timezone
 import os
 import requests
 import base64
+import re
 
 ###############################################################################
 # -------------------------------  HELPERS  --------------------------------- #
 ###############################################################################
+
+def format_question_with_code(text: str, lang: str = "javascript") -> str:
+    """
+    Tìm các đoạn nằm giữa cặp ``` … ``` rồi gắn nhãn ngôn ngữ cho code-block  
+    để Streamlit highlight đẹp mắt.
+    """
+    # lấy nguyên phần giữa ``` … ```
+    code_blocks = re.findall(r"```(.*?)```", text, flags=re.DOTALL)
+    for block in code_blocks:
+        text = text.replace(
+            f"```{block}```",
+            f"\n```{lang}\n{block.strip()}\n```",
+        )
+    return text
 
 def save_to_github(account: str, skill: str, final_result: str, history: list, failed: bool):
     """Push one result file to GitHub (requires secrets to be set)."""
@@ -669,7 +684,17 @@ elif not st.session_state["session"].is_finished:
     )
 
     st.subheader(f"📌 Câu hỏi mức độ: {level_str} ({current_skill})")
-    st.markdown(f"**❓ {question['question']}**")
+    lang_map = {
+        "html": "html",
+        "css": "css",
+        "javascript": "javascript",
+        "react": "javascript",
+        "github": "bash",          # ví dụ
+    }
+    lang = lang_map.get(current_skill, "text")
+
+    question_md = format_question_with_code(f"**❓ {question['question']}**", lang)
+    st.markdown(question_md, unsafe_allow_html=True)
 
     for idx, option in enumerate(question["options"]):
         if st.button(option["description"], key=f"opt_{idx}"):
